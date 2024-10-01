@@ -15,6 +15,7 @@ const complainRouter = require('./routes/complain.js');
 // use routes (put this near the bottom, BEFORE app.listen()
 app.use('/', indexRouter);
 app.use(express.static('client'));
+app.use(express.json());
 
 // // .all refers to ALL http methods - GET, POST, DELETE etc
 // // note .status(404) and method chaining
