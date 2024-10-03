@@ -28,12 +28,43 @@ router.get('/hoots', (req, res) => {
 });
 
 router.post('/addHoot', (req, res) => {
-  console.log('req.body=', req.body); // NEW!
-  const test = {
-    testId: generateNewId(),
-    testMsg: req.body.content, // NEW!
+  // console.log('req.body.content=', req.body.content); // NEW!
+  const content = req.body && req.body.content ? req.body.content : 'No req.body or req.body.content found!';
+
+  const hoot = {
+    id: generateNewId(),
+    content,
+    createdAt: new Date(),
   };
-  res.json(test);
+
+  hoots.push(hoot);
+
+  res.status(201).json(hoot);
+});
+
+// delete
+const getHootById = (id) => {
+  const hoot = hoots.find((h) => h.id === id);
+  return hoot;
+};
+
+const deleteHootById = (id) => {
+  const hoot = getHootById(id);
+  if (!hoot) return null;
+  const index = hoots.indexOf(hoot);
+  hoots.splice(index, 1);
+  return hoot;
+};
+
+router.delete('/deleteHoot/:id([0-9,a-z,A-Z,-]{36})', (req, res) => {
+  // res.send('The id you specified for DELETE is ' + req.params.id);
+  const hoot = deleteHootById(req.params.id);
+  if (!hoot) {
+    const error = `id: '${req.params.id}' not found`;
+    res.status(4040).send({ error });
+  } else {
+    res.json(hoot);
+  }
 });
 
 module.exports = router;
