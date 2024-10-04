@@ -74,6 +74,7 @@ const getJsonFetch = async (url, callback) => {
 const postJsonFetch = async(url, payload, callback, method ='POST') => {
     let json;
     let status;
+    console.log(url);
     try{
         const response = await fetch(url,{
             method: method,
@@ -129,24 +130,45 @@ const addHootCallback = selector => {
 const addHootForm = document.querySelector('#form-add-hoot');
 const newHootURL = '/api/addHoot';
 addHootForm.onsubmit = (evt) => {
-    evt.preventDefault();
-    const content = addHootForm['content'].value;
-    const payload = {
-        content,
-    };
-    addHootForm['content'].value = "";
-    postJsonFetch(newHootURL, payload, addHootCallback('#output-new-hoot'));
+  evt.preventDefault();
+  const content = addHootForm['content'].value;
+  const payload = {
+      content,
+  };
+  addHootForm['content'].value = "";
+  postJsonFetch(newHootURL, payload, addHootCallback('#output-new-hoot'));
 };
 
 //delete hoot
-const deleteHootForm = document.querySelector('#form-add-hoot');
+const deleteHootForm = document.querySelector('#form-delete-hoot');
 const deleteHootURL = '/api/deleteHoot';
 deleteHootForm.onsubmit = (evt) => {
-    evt.preventDefault();
-    const id = deleteHootForm['hoot-id'].value.trim();
-    const payload = {};
-    deleteHootForm['hoot-id'].value = "";
-    postJsonFetch(`${deleteHootURL}/${id}`, payload, addHootCallback('#output-delete-hoot'), 'DELETE');
+  evt.preventDefault();
+  const id = deleteHootForm['hoot-id'].value.trim();
+  console.log(id);
+  const payload = {};
+  deleteHootForm['hoot-id'].value = "";
+  postJsonFetch(`${deleteHootURL}/${id}`, payload, addHootCallback('#output-delete-hoot'), 'DELETE');
+};
+
+//put hoot
+const updateHootForm = document.querySelector('#form-edit-hoot');
+const updateHootURL = '/api/updateHoot';
+updateHootForm.onsubmit = (evt) => {
+  evt.preventDefault();
+  console.log(updateHootForm);
+  const id = updateHootForm['hoot-id'].value.trim();
+  const content = updateHootForm['content'].value;
+  console.log(id);
+  console.log(content);
+  const payload = {
+    content,
+  };
+  console.log(payload);
+  updateHootForm['hoot-id'].value = '';
+  updateHootForm['content'].value = '';
+  console.log(`${updateHootURL}/${id}`);
+  postJsonFetch(`${updateHootURL}/${id}`, payload, addHootCallback('#output-edit-hoot'), 'PUT');
 };
 
 </script>
