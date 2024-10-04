@@ -82,4 +82,15 @@ router.put('/updateHoot/:id([0-9,a-z,A-Z,-]{36})', (req, res) => {
   }
 });
 
+router.get('/hoots/:id([0-9,a-z,A-Z,-]{36})', (req, res) => {
+  // res.send('The id you specified for DELETE is ' + req.params.id);
+  const hoot = getHootById(req.params.id);
+  if (!hoot) {
+    const error = `id: '${req.params.id}' not found`;
+    res.status(404).send({ error });
+  } else {
+    res.json(hoot);
+  }
+});
+
 module.exports = router;

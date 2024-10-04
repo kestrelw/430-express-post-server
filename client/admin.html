@@ -51,6 +51,15 @@
 <div id="output-edit-hoot">???</div>
 <hr>
 
+<hr>
+<h2>V. View one hoot!</h2>
+<form id="form-view-hoot">
+  <label>Id: <input type="text" name="hoot-id" size="36"></label><br><br>
+  <button type="submit">Send GET Request to <kbd>/api/hoots/:id</kbd></button>
+</form>
+
+<div id="output-view-hoot">???</div>
+
 </body>
 <script>
 const getJsonFetch = async (url, callback) => {
@@ -169,6 +178,16 @@ updateHootForm.onsubmit = (evt) => {
   updateHootForm['content'].value = '';
   console.log(`${updateHootURL}/${id}`);
   postJsonFetch(`${updateHootURL}/${id}`, payload, addHootCallback('#output-edit-hoot'), 'PUT');
+};
+
+//view hoot
+const viewSingleHootForm = document.querySelector('#form-view-hoot');
+const viewSingleHootURL = '/api/hoots';
+viewSingleHootForm.onsubmit = (evt) => {
+  evt.preventDefault();
+  const id = viewSingleHootForm['hoot-id'].value.trim();
+  const payload = {};
+  getJsonFetch(`${viewSingleHootURL}/${id}`, addHootCallback('#output-view-hoot'));
 };
 
 </script>
